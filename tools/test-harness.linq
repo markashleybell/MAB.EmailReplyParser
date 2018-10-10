@@ -3,7 +3,6 @@
   <Namespace>MAB.EmailReplyParser</Namespace>
 </Query>
 
-
 let workingDir = Path.GetDirectoryName(Util.CurrentQueryPath)
 
 let display (i, v, t, l) = (i, v.ToString(), t.ToString(), l)
@@ -19,5 +18,10 @@ let body = getBody "basic_test"
 body 
 |> EmailReplyParser.getVisibleLines  
 |> List.map display
+|> Dump 
+|> ignore
+
+body 
+|> EmailReplyParser.parse  
 |> Dump 
 |> ignore
