@@ -52,7 +52,7 @@ module EmailReplyParser =
                             | true -> Visible
                             | false -> Hidden
                 | _ -> Visible
-        lines @ [(i, v, typ, ln)]
+        (i, v, typ, ln)::lines
 
     let getLines emailBody = 
             emailBody 
@@ -74,6 +74,7 @@ module EmailReplyParser =
         classified 
         |> List.fold setLineVisibility' [] 
         |> List.filter (fun (_, vis, _, _) -> vis = Visible)
+        |> List.rev
 
     let parse emailBody = 
         emailBody
