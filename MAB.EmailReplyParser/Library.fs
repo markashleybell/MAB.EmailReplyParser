@@ -31,28 +31,28 @@ module EmailReplyParser =
 
     let isEmpty ln = ln = ""
 
-    let classifyLine i line =
-        let c = match (line |> isPartOfQuote) with
+    let classifyLine i ln =
+        let t = match (ln |> isPartOfQuote) with
                 | true -> Quoted
-                | false -> match (line |> isEmpty) with
+                | false -> match (ln |> isEmpty) with
                            | true -> Empty
-                           | false -> match (line |> isSignatureDelimiter) with 
+                           | false -> match (ln |> isSignatureDelimiter) with 
                                       | true -> SignatureDelimiter
                                       | false -> Content
-        (i, c, line)
+        { Index=i; Visibility=Visible; Type=t; Content=ln }
 
     let contentAfter idx lines =
        lines 
        |> List.skip idx 
-       |> List.exists (fun (_, typ, _) -> typ = Content)
+       |> List.exists (fun ln -> ln.Type = Content)
 
-    let setLineVisibility lines out (i, typ, ln) =
-        let v = match typ with
-                | Quoted -> match (lines |> contentAfter i) with 
+    let setLineVisibility lines out ln =
+        let v = match ln.Type with
+                | Quoted -> match (lines |> contentAfter ln.Index) with 
                             | true -> Visible
                             | false -> Hidden
                 | _ -> Visible
-        (i, v, typ, ln)::out
+        { ln with Visibility=v }::out
 
     let getLines emailBody = 
         emailBody 
@@ -67,18 +67,18 @@ module EmailReplyParser =
             emailBody
             |> getLines 
             |> List.mapi classifyLine 
-            |> List.takeWhile (fun (_, typ, _) -> typ <> SignatureDelimiter)
+            |> List.takeWhile (fun ln -> ln.Type <> SignatureDelimiter)
 
         let setLineVisibility' = setLineVisibility classified
         
         classified 
         |> List.fold setLineVisibility' [] 
-        |> List.filter (fun (_, vis, _, _) -> vis = Visible)
+        |> List.filter (fun ln -> ln.Visibility = Visible)
         |> List.rev
 
     let parse emailBody = 
         emailBody
         |> getVisibleLines
-        |> List.map (fun (_, _, _, s) -> s)
+        |> List.map (fun ln -> ln.Content)
         |> String.concat "\n"
         |> String.trim

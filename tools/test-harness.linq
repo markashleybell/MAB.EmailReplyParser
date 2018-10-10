@@ -5,14 +5,14 @@
 
 let workingDir = Path.GetDirectoryName(Util.CurrentQueryPath)
 
-let display (i, v, t, l) = (i, v.ToString(), t.ToString(), l)
+let display ln = (ln.Index, ln.Visibility.ToString(), ln.Type.ToString(), ln.Content)
 
 let getBody n = 
     let path = sprintf "%s\..\MAB.EmailReplyParser.Test\TestData\%s.txt" workingDir n
     File.ReadAllText(path)
 
 //let body = getBody "email_gmail"
-//let body = getBody "email_1_4"
+//let body = getBody "email_1_1"
 let body = getBody "basic_test"
 
 body 
