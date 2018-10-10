@@ -1,9 +1,7 @@
 namespace MAB.EmailReplyParser
 
 module EmailReplyParser =
-    open System
     open System.Text.RegularExpressions
-    open Utils
 
     let multiLineQuoteHeaderRx = new Regex(@"(?!On.*On\s.+?wrote:)(On\s(.+?)wrote:)", RegexOptions.Singleline)
 
@@ -58,10 +56,10 @@ module EmailReplyParser =
 
     let getLines emailBody = 
             emailBody 
-            |> replace "\r\n" "\n" 
+            |> String.replace "\r\n" "\n" 
             |> replaceNewLinesInQuoteHeader
             |> addSpaceBeforeLineSeparator
-            |> split '\n'
+            |> String.split '\n'
             |> Array.toList
 
     let getVisibleLines emailBody =

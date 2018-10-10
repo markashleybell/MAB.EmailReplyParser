@@ -6,7 +6,7 @@
 
     <ItemGroup>
         <Compile Include="Types.fs" />
-        <Compile Include="Utils.fs" />
+        <Compile Include="String.fs" />
         <Compile Include="Library.fs" />
     </ItemGroup>
 
