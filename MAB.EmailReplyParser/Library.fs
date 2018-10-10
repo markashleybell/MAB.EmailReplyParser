@@ -37,7 +37,7 @@ module EmailReplyParser =
                 | false -> match (line |> isEmpty) with
                            | true -> Empty
                            | false -> match (line |> isSignatureDelimiter) with 
-                                      | true -> Signature
+                                      | true -> SignatureDelimiter
                                       | false -> Content
         (i, c, line)
 
@@ -67,7 +67,7 @@ module EmailReplyParser =
             emailBody
             |> getLines 
             |> List.mapi classifyLine 
-            |> List.takeWhile (fun (_, typ, _) -> typ <> Signature)
+            |> List.takeWhile (fun (_, typ, _) -> typ <> SignatureDelimiter)
 
         let setLineVisibility' = setLineVisibility classified
         
