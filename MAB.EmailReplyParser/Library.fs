@@ -11,7 +11,7 @@ module EmailReplyParser =
 
     let lineSeparatorRx = new Regex(@"([^\n])((?=\n_{7}_+)|(?=\n-{7}-+))$")
     
-    let signatureRx = new Regex(@"(?m)(--\s*$|__\s*$|—\s*$|\w-$)|(^(\w+\s*){1,3} ym morf tneS$)|(.*:morF)")
+    let signatureDelimiterRx = new Regex(@"(?m)(--\s*$|__\s*$|—\s*$|\w-$)|(^Sent from my (\w+\s*){1,3}$)|(From:.*)")
     
     let quoteHeaderRx = new Regex(@"^On.*wrote:$")
     
@@ -25,7 +25,7 @@ module EmailReplyParser =
 
     let isQuoteHeader s = quoteHeaderRx.IsMatch s
 
-    let isSignatureDelimiter s = signatureRx.IsMatch s
+    let isSignatureDelimiter s = signatureDelimiterRx.IsMatch s
     
     let isQuoted s = quoteRx.IsMatch s
 
