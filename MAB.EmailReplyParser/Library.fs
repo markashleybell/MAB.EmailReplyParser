@@ -41,26 +41,26 @@ module EmailReplyParser =
                                       | false -> Content
         (i, c, line)
 
-    let contentAfter idx src =
-       src 
+    let contentAfter idx lines =
+       lines 
        |> List.skip idx 
        |> List.exists (fun (_, typ, _) -> typ = Content)
 
-    let setLineVisibility src lines (i, typ, ln) =
+    let setLineVisibility lines out (i, typ, ln) =
         let v = match typ with
-                | Quoted -> match (src |> contentAfter i) with 
+                | Quoted -> match (lines |> contentAfter i) with 
                             | true -> Visible
                             | false -> Hidden
                 | _ -> Visible
-        (i, v, typ, ln)::lines
+        (i, v, typ, ln)::out
 
     let getLines emailBody = 
-            emailBody 
-            |> String.replace "\r\n" "\n" 
-            |> replaceNewLinesInQuoteHeader
-            |> addSpaceBeforeLineSeparator
-            |> String.split '\n'
-            |> Array.toList
+        emailBody 
+        |> String.replace "\r\n" "\n" 
+        |> replaceNewLinesInQuoteHeader
+        |> addSpaceBeforeLineSeparator
+        |> String.split '\n'
+        |> Array.toList
 
     let getVisibleLines emailBody =
         let classified = 
