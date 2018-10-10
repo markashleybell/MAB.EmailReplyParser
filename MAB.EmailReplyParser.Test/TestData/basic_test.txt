@@ -1,0 +1,17 @@
+This is the reply. I've added some comments inline below.
+
+On Tue, 2011-03-01 at 18:02 +0530, 
+Abhishek Kona wrote:
+> This is a quote from the original email.
+
+Yes it is.
+
+> Kind regards,
+> Abhishek
+> 
+> --
+> MegaCorp Ltd
+>
+
+--
+Test Bloke
