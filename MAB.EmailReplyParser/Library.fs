@@ -76,10 +76,8 @@ module EmailReplyParser =
         |> List.filter (fun (_, vis, _, _) -> vis = Visible)
 
     let parse emailBody = 
-        let reply =
-            emailBody
-            |> getVisibleLines
-            |> List.map (fun (_, _, _, s) -> s)
-            |> String.concat "\n"
-
-        reply.Trim()
+        emailBody
+        |> getVisibleLines
+        |> List.map (fun (_, _, _, s) -> s)
+        |> String.concat "\n"
+        |> String.trim
