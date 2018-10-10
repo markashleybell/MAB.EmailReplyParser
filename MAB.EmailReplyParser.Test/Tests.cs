@@ -29,6 +29,7 @@ namespace MAB.EmailReplyParser.Test
         [TestCase("email_1_6")]
         [TestCase("email_1_7")]
         [TestCase("email_1_8")]
+        [TestCase("email_1_9")]
         [TestCase("email_2_1")]
         [TestCase("email_2_2")]
         [TestCase("email_2_3")]

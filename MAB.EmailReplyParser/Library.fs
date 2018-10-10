@@ -1,4 +1,4 @@
-namespace MAB.EmailReplyParser
+﻿namespace MAB.EmailReplyParser
 
 module EmailReplyParser =
     open System.Text.RegularExpressions
@@ -9,14 +9,14 @@ module EmailReplyParser =
 
     let lineSeparatorRx = new Regex(@"([^\n])((?=\n_{7}_+)|(?=\n-{7}-+))$")
     
-    let signatureDelimiterRx = new Regex(@"(?m)(--\s*$|__\s*$|�\s*$|\w-$)|(^Sent from my (\w+\s*){1,3}$)|(From:.*)")
+    let signatureDelimiterRx = new Regex(@"(?m)(--\s*$|__\s*$|—\s*$|\w-$)|(^Sent from my (\w+\s*){1,3}$)|(From:.*)")
     
     let quoteHeaderRx = new Regex(@"^On.*wrote:$")
     
     let quoteRx = new Regex(@"^>+")
     
     let replaceNewLinesInQuoteHeader (s: string) =
-        multiLineQuoteHeaderRx.Replace(s, (fun m -> m.Value.Replace("\n", "")))
+        multiLineQuoteHeaderRx.Replace(s, (fun m -> m.Value.Replace("\n", " ") |> String.replace @" {2,}" " "))
     
     let addSpaceBeforeLineSeparator (s: string) = 
         lineSeparatorRx.Replace(s, (fun m -> m.Value + "\n"), 1)

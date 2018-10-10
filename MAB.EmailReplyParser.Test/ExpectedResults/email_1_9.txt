@@ -34,20 +34,3 @@ which says
 "At the moment there is no straightforward way to delete an entire
 Bucket. There is, however, an open ticket for the feature. To delete all
 the keys in a bucket, you’ll need to delete them all individually."
-
->
-> -Abhishek Kona
->
->
-> _______________________________________________
-> riak-users mailing list
-> riak-users@lists.basho.com
-> http://lists.basho.com/mailman/listinfo/riak-users_lists.basho.com
-
-
-
-
-_______________________________________________
-riak-users mailing list
-riak-users@lists.basho.com
-http://lists.basho.com/mailman/listinfo/riak-users_lists.basho.com
