@@ -25,7 +25,7 @@ EmailReplyParser.getLines body
 ### From C\#
 
 ```csharp
-using MAB.EmailReplyParser
+using MAB.EmailReplyParser;
 
 EmailReplyParser.getReply(body);
 EmailReplyParser.getLinesPlainText(body);
