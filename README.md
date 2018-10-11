@@ -29,7 +29,7 @@ using MAB.EmailReplyParser
 
 EmailReplyParser.getReply(body);
 EmailReplyParser.getLinesPlainText(body);
-EmailReplyParser.getLines body(body);
+EmailReplyParser.getLines(body);
 ```
 
 In almost every case, `EmailReplyParser.getReply` is the function you'll actually want to use. The others can be useful if you're getting incorrect results and need to visualise how the text has been split up and classified.
