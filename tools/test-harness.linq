@@ -16,12 +16,17 @@ let getBody n =
 let body = getBody "basic_test"
 
 body 
-|> EmailReplyParser.getVisibleLines  
-|> List.map display
+|> EmailReplyParser.getLinesPlainText
 |> Dump 
 |> ignore
 
 body 
-|> EmailReplyParser.parse  
+|> EmailReplyParser.getLines  
+|> Array.map display
+|> Dump 
+|> ignore
+
+body 
+|> EmailReplyParser.getReply  
 |> Dump 
 |> ignore

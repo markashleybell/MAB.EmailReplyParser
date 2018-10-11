@@ -50,7 +50,7 @@ namespace MAB.EmailReplyParser.Test
             string rawBody = LoadFile(string.Format("MAB.EmailReplyParser.Test.TestData.{0}.txt", fileName));
             string expectedReply = LoadFile(string.Format("MAB.EmailReplyParser.Test.ExpectedResults.{0}.txt", fileName)).Replace("\r\n", "\n");
 
-            string reply = EmailReplyParser.parse(rawBody);
+            string reply = EmailReplyParser.getReply(rawBody);
 
             Assert.AreEqual(expectedReply, reply);
         }
