@@ -1,5 +1,7 @@
 # MAB.EmailReplyParser
 
+[![NuGet](https://img.shields.io/nuget/v/MAB.EmailReplyParser.svg)](https://www.nuget.org/packages/MAB.EmailReplyParser/)
+
 A library for parsing plain-text email replies and removing quotes, signatures etc.
 
 ## Usage
