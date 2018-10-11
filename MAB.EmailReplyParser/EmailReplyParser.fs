@@ -23,7 +23,11 @@ module EmailReplyParser =
 
     let isPartOfQuote s = s |> isQuoted || s |> isQuoteHeader
 
-    let isEmpty ln = ln = ""
+    let isNotPartOfQuote s = not (s |> isPartOfQuote)
+
+    let isNonQuotedSignatureDelimiter ln = ln.Content |> isSignatureDelimiter && ln.Content |> isNotPartOfQuote
+
+    let isNonEmptyContent ln = ln.Type = Content && ln.Content <> ""
 
     let private replaceNewLinesInQuoteHeader (s: string) =
         multiLineQuoteHeaderRx.Replace(s, (fun m -> m.Value.Replace("\n", " ") |> String.replace @" {2,}" " "))
@@ -31,53 +35,56 @@ module EmailReplyParser =
     let private addSpaceBeforeLineSeparator (s: string) = 
         lineSeparatorRx.Replace(s, (fun m -> m.Value + "\n"), 1)
 
-    let private classify i ln =
-        let t = match (ln |> isPartOfQuote) with
-                | true -> Quoted
-                | false -> match (ln |> isEmpty) with
-                           | true -> Empty
-                           | false -> match (ln |> isSignatureDelimiter) with 
-                                      | true -> SignatureDelimiter
-                                      | false -> Content
-        { Index=i; Visibility=Visible; Type=t; Content=ln }
+    let private signatureBefore idx lines =
+        lines |> List.take idx |> List.exists isNonQuotedSignatureDelimiter
 
-    let private contentAfter idx lines =
-       lines 
-       |> List.skip idx 
-       |> List.exists (fun ln -> ln.Type = Content)
+    let private nonEmptyContentAfter idx lines =
+        lines |> List.skip idx |> List.exists isNonEmptyContent
 
-    let private setLineVisibility lines out ln =
-        let v = match ln.Type with
-                | Quoted -> match (lines |> contentAfter ln.Index) with 
-                            | true -> Visible
-                            | false -> Hidden
-                | _ -> Visible
-        { ln with Visibility=v }::out
+    let private toLines i ln =
+        { Index=i; Visibility=Visible; Type=Content; Content=ln }
 
-    let getLinesPlainText emailBody = 
-        emailBody 
+    let private classify lines ln =
+        let typ = match (ln.Content |> isPartOfQuote) with
+                  | true -> Quoted
+                  | false -> match (ln.Content |> isSignatureDelimiter || lines |> signatureBefore ln.Index) with 
+                             | true -> Signature
+                             | false -> Content
+        { ln with Type=typ; }
+
+    let private setVisible lines ln =
+        let vis = match ln.Type with
+                  | Quoted -> match (lines |> nonEmptyContentAfter ln.Index) with 
+                              | true -> Visible
+                              | false -> Hidden
+                  | Signature -> Hidden
+                  | Content -> Visible
+        { ln with Visibility=vis; }
+
+    let getLinesPlainText messageBody = 
+        messageBody 
         |> String.replace "\r\n" "\n" 
         |> replaceNewLinesInQuoteHeader
         |> addSpaceBeforeLineSeparator
         |> String.split '\n'
 
-    let getLines emailBody =
-        let classified = 
-            emailBody
+    let getLines messageBody =
+        let lines = 
+            messageBody
             |> getLinesPlainText 
             |> Array.toList
-            |> List.mapi classify
-            |> List.takeWhile (fun ln -> ln.Type <> SignatureDelimiter)
-
-        let setLineVisibility' = setLineVisibility classified
+            |> List.mapi toLines
         
-        classified 
-        |> List.fold setLineVisibility' []
-        |> List.rev
+        let classified = lines |> List.map (classify lines)
+        
+        let setVisible' = setVisible classified
+
+        classified
+        |> List.map setVisible'
         |> List.toArray
 
-    let getReply emailBody = 
-        emailBody
+    let getReply messageBody = 
+        messageBody
         |> getLines
         |> Array.filter (fun ln -> ln.Visibility = Visible)
         |> Array.map (fun ln -> ln.Content)

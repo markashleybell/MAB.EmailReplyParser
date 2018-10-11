@@ -1,8 +1,13 @@
 ﻿namespace MAB.EmailReplyParser
 
-type EmailReplyLineVisibility = Visible | Hidden
+type EmailReplyLineVisibility = 
+    | Visible
+    | Hidden
     
-type EmailReplyLineType = Empty | Content | Quoted | SignatureDelimiter
+type EmailReplyLineType = 
+    | Quoted
+    | Signature
+    | Content
 
 type EmailReplyLine = {
     Index: int
