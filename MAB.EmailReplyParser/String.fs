@@ -1,6 +1,6 @@
 ﻿namespace MAB.EmailReplyParser
 
-module String =
+module internal String =
     open System.Text.RegularExpressions
 
     let replace pat (sub: string) s = Regex.Replace(s, pat, sub)
