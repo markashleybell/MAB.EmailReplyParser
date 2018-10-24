@@ -5,7 +5,7 @@
         <PackageProjectUrl>https://github.com/markashleybell/MAB.EmailReplyParser</PackageProjectUrl>
         <RepositoryUrl>https://github.com/markashleybell/MAB.EmailReplyParser.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Copyright>© Mark Ashley Bell 2018</Copyright>
         <Authors>Mark Ashley Bell</Authors>
