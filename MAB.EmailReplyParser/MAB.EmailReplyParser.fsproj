@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
         <PackageProjectUrl>https://github.com/markashleybell/MAB.EmailReplyParser</PackageProjectUrl>
         <RepositoryUrl>https://github.com/markashleybell/MAB.EmailReplyParser.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
