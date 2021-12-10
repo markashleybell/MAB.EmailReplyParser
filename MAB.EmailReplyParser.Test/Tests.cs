@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
+using NUnit.Framework;
 
 namespace MAB.EmailReplyParser.Test
 {
@@ -9,10 +9,10 @@ namespace MAB.EmailReplyParser.Test
     {
         private string LoadFile(string resourceName)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader reader = new StreamReader(stream))
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using (var reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();
             }
@@ -47,10 +47,10 @@ namespace MAB.EmailReplyParser.Test
         [TestCase("pathological")]
         public void VerifyParsedReply(string fileName)
         {
-            string rawBody = LoadFile(string.Format("MAB.EmailReplyParser.Test.TestData.{0}.txt", fileName));
-            string expectedReply = LoadFile(string.Format("MAB.EmailReplyParser.Test.ExpectedResults.{0}.txt", fileName)).Replace("\r\n", "\n");
+            var rawBody = LoadFile(string.Format("MAB.EmailReplyParser.Test.TestData.{0}.txt", fileName));
+            var expectedReply = LoadFile(string.Format("MAB.EmailReplyParser.Test.ExpectedResults.{0}.txt", fileName)).Replace("\r\n", "\n");
 
-            string reply = EmailReplyParser.getReply(rawBody);
+            var reply = EmailReplyParser.getReply(rawBody);
 
             Assert.AreEqual(expectedReply, reply);
         }

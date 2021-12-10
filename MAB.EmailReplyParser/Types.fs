@@ -1,10 +1,10 @@
 ﻿namespace MAB.EmailReplyParser
 
-type EmailReplyLineVisibility = 
+type EmailReplyLineVisibility =
     | Visible
     | Hidden
-    
-type EmailReplyLineType = 
+
+type EmailReplyLineType =
     | Quoted
     | Signature
     | Content

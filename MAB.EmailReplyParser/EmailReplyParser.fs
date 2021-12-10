@@ -32,7 +32,7 @@ module EmailReplyParser =
     let private replaceNewLinesInQuoteHeader (s: string) =
         multiLineQuoteHeaderRx.Replace(s, (fun m -> m.Value.Replace("\n", " ") |> String.replace @" {2,}" " "))
 
-    let private addSpaceBeforeLineSeparator (s: string) = 
+    let private addSpaceBeforeLineSeparator (s: string) =
         lineSeparatorRx.Replace(s, (fun m -> m.Value + "\n"), 1)
 
     let private signatureBefore idx lines =
@@ -47,43 +47,43 @@ module EmailReplyParser =
     let private classify lines ln =
         let typ = match (ln.Content |> isPartOfQuote) with
                   | true -> Quoted
-                  | false -> match (ln.Content |> isSignatureDelimiter || lines |> signatureBefore ln.Index) with 
+                  | false -> match (ln.Content |> isSignatureDelimiter || lines |> signatureBefore ln.Index) with
                              | true -> Signature
                              | false -> Content
         { ln with Type=typ; }
 
     let private setVisible lines ln =
         let vis = match ln.Type with
-                  | Quoted -> match (lines |> nonEmptyContentAfter ln.Index) with 
+                  | Quoted -> match (lines |> nonEmptyContentAfter ln.Index) with
                               | true -> Visible
                               | false -> Hidden
                   | Signature -> Hidden
                   | Content -> Visible
         { ln with Visibility=vis; }
 
-    let getLinesPlainText messageBody = 
-        messageBody 
-        |> String.replace "\r\n" "\n" 
+    let getLinesPlainText messageBody =
+        messageBody
+        |> String.replace "\r\n" "\n"
         |> replaceNewLinesInQuoteHeader
         |> addSpaceBeforeLineSeparator
         |> String.split '\n'
 
     let getLines messageBody =
-        let lines = 
+        let lines =
             messageBody
-            |> getLinesPlainText 
+            |> getLinesPlainText
             |> Array.toList
             |> List.mapi toLines
-        
+
         let classified = lines |> List.map (classify lines)
-        
+
         let setVisible' = setVisible classified
 
         classified
         |> List.map setVisible'
         |> List.toArray
 
-    let getReply messageBody = 
+    let getReply messageBody =
         messageBody
         |> getLines
         |> Array.filter (fun ln -> ln.Visibility = Visible)
