@@ -1,24 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
         <PackageProjectUrl>https://github.com/markashleybell/MAB.EmailReplyParser</PackageProjectUrl>
         <RepositoryUrl>https://github.com/markashleybell/MAB.EmailReplyParser.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <Version>1.0.1</Version>
+        <Version>2.0.0</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Copyright>© Mark Ashley Bell 2018</Copyright>
         <Authors>Mark Ashley Bell</Authors>
         <Company />
         <PackageTags>email parser</PackageTags>
-        <PackageLicenseUrl>https://github.com/markashleybell/MAB.EmailReplyParser/blob/master/LICENSE</PackageLicenseUrl>
         <Description>A library for parsing plain-text email replies and removing quotes, signatures etc.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
         <Compile Include="Types.fs" />
         <Compile Include="String.fs" />
         <Compile Include="EmailReplyParser.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Update="FSharp.Core" Version="6.0.1" />
     </ItemGroup>
 
 </Project>
